@@ -26,6 +26,22 @@ public class Door :interactableObject
 
     protected override void AccessBuilding()
     {
-        isOp
+        isOpen = !isOpen;
+        if(isOpen)
+        {
+            interactionText = "[E] ¹® ´Ý±â";
+            StartCoroutine(MoveDoor(openPosition));
+        }
+    }
+
+    IEnumerator MoveDoor(Vector3 targetPosition)
+    {
+        while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, openSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        transform.position = targetPosition;
     }
 }

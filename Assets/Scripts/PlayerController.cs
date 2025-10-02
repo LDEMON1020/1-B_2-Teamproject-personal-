@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour
     private bool wasGrounded;
     private float attackTimer;
 
+    private bool isUIMode = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +48,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            ToggleCursorLock();
+        }
+
         CheckGrounded();
         UpdateAnimator();
         HandleMovement();
@@ -183,5 +190,32 @@ public class PlayerController : MonoBehaviour
                 animator.SetTrigger("attackTrigger");
             }
         }
+    }
+
+    public void SetCursorLock(bool lockCursor)
+    {
+        if(lockCursor)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            isUIMode = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            isUIMode = true;
+        }
+    }
+
+    public void ToggleCursorLock()
+    {
+        bool ShouldLock = Cursor.lockState != CursorLockMode.Locked;
+        SetCursorLock(ShouldLock);
+    }
+
+    public void SetUIMode(bool uiMode)
+    {
+        SetCursorLock(!uiMode);
     }
 }
